@@ -182,7 +182,7 @@ public class ArangoAqlQueryTest extends AbstractArangoRepositoryTest {
 	public void findManyLegalAgeWithStaticProjectionTest() {
 		repository.saveAll(customers);
 		final List<CustomerNameProjection> retrieved = repository.findManyLegalAgeWithStaticProjection();
-		for (CustomerNameProjection proj : retrieved) {
+		for (final CustomerNameProjection proj : retrieved) {
 			assertThat(proj.getName(), isOneOf(john.getName(), bob.getName()));
 		}
 	}
@@ -200,7 +200,7 @@ public class ArangoAqlQueryTest extends AbstractArangoRepositoryTest {
 		repository.saveAll(customers);
 		final List<CustomerNameProjection> retrieved = repository
 				.findManyLegalAgeWithDynamicProjection(CustomerNameProjection.class);
-		for (CustomerNameProjection proj : retrieved) {
+		for (final CustomerNameProjection proj : retrieved) {
 			assertThat(proj.getName(), isOneOf(john.getName(), bob.getName()));
 		}
 	}
@@ -240,7 +240,7 @@ public class ArangoAqlQueryTest extends AbstractArangoRepositoryTest {
 	@Test
 	public void overriddenCrudMethodsTest() {
 		overriddenRepository.saveAll(customers);
-		Iterator<Customer> customers = overriddenRepository.findAll().iterator();
+		final Iterator<Customer> customers = overriddenRepository.findAll().iterator();
 		assertThat(customers.hasNext(), is(true));
 		assertThat(customers.next(), is(nullValue()));
 	}

@@ -408,10 +408,11 @@ public class DefaultArangoConverter implements ArangoConverter {
 			}
 			return;
 		}
-		
+
 		final Object entity = source instanceof LazyLoadingProxy ? ((LazyLoadingProxy) source).getEntity() : source;
-		final TypeInformation<?> entityType = (entity == source) ? sourceType : ClassTypeInformation.from(entity.getClass());
-		
+		final TypeInformation<?> entityType = (entity == source) ? sourceType
+				: ClassTypeInformation.from(entity.getClass());
+
 		if (conversions.isSimpleType(entityType.getType())) {
 			final Optional<Class<?>> customWriteTarget = conversions.getCustomWriteTarget(entityType.getType());
 			final Class<?> targetType = customWriteTarget.orElseGet(() -> entityType.getType());
@@ -482,15 +483,13 @@ public class DefaultArangoConverter implements ArangoConverter {
 		if (source instanceof LazyLoadingProxy) {
 			return Optional.of(((LazyLoadingProxy) source).getRefId());
 		}
-		
-		final Object id = entity.getIdentifierAccessor(source).getIdentifier();
-		if (id != null) {
-			return Optional.of(id);
+
+		Optional<Object> id = Optional.ofNullable(entity.getIdentifierAccessor(source).getIdentifier());
+		if (!id.isPresent()) {
+			id = entity.getKeyProperty().map(prop -> entity.getPropertyAccessor(source).getProperty(prop));
 		}
 
-		final Optional<Object> optKey = entity.getKeyProperty()
-				.map(prop -> entity.getPropertyAccessor(source).getProperty(prop));
-		return optKey.map(key -> MetadataUtils.createIdFromCollectionAndKey(entity.getCollection(), convertKey(key)));
+		return id.map(key -> MetadataUtils.createIdFromCollectionAndKey(entity.getCollection(), convertKey(key)));
 	}
 
 	private Collection<?> createCollection(final Collection<?> source, final ArangoPersistentProperty property) {

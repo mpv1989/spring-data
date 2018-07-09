@@ -639,7 +639,7 @@ public class ArangoTemplate implements ArangoOperations, CollectionCallback {
 		final PersistentPropertyAccessor accessor = entity.getPropertyAccessor(value);
 		final ArangoPersistentProperty idProperty = entity.getIdProperty();
 		if (idProperty != null) {
-			accessor.setProperty(idProperty, documentEntity.getId());
+			accessor.setProperty(idProperty, documentEntity.getKey());
 		}
 		entity.getKeyProperty().ifPresent(key -> accessor.setProperty(key, documentEntity.getKey()));
 		entity.getRevProperty().ifPresent(rev -> accessor.setProperty(rev, documentEntity.getRev()));
