@@ -62,14 +62,15 @@ public interface ArangoOperations {
 	ArangoDBVersion getVersion() throws DataAccessException;
 
 	/**
-	 * Create a cursor and return the first results
+	 * Performs a database query using the given {@code query} and {@code bindVars}, then returns a new
+	 * {@code ArangoCursor} instance for the result list.
 	 * 
 	 * @param query
-	 *            contains the query string to be executed
+	 *            An AQL query string
 	 * @param bindVars
-	 *            key/value pairs representing the bind parameters, can be null
+	 *            key/value pairs defining the variables to bind the query to
 	 * @param options
-	 *            Additional options, can be null
+	 *            Additional options that will be passed to the query API, can be null
 	 * @param entityClass
 	 *            The entity type of the result
 	 * @return cursor of the results
@@ -79,12 +80,13 @@ public interface ArangoOperations {
 			throws DataAccessException;
 
 	/**
-	 * Create a cursor and return the first results
+	 * Performs a database query using the given {@code query} and {@code bindVars}, then returns a new
+	 * {@code ArangoCursor} instance for the result list.
 	 * 
 	 * @param query
-	 *            contains the query string to be executed
+	 *            An AQL query string
 	 * @param bindVars
-	 *            key/value pairs representing the bind parameters, can be null
+	 *            key/value pairs defining the variables to bind the query to
 	 * @param entityClass
 	 *            The entity type of the result
 	 * @return cursor of the results
@@ -94,12 +96,13 @@ public interface ArangoOperations {
 			throws DataAccessException;
 
 	/**
-	 * Create a cursor and return the first results. For queries without bind parameters.
+	 * Performs a database query using the given {@code query}, then returns a new {@code ArangoCursor} instance for the
+	 * result list.
 	 * 
 	 * @param query
-	 *            contains the query string to be executed
+	 *            An AQL query string
 	 * @param options
-	 *            Additional options, can be null
+	 *            Additional options that will be passed to the query API, can be null
 	 * @param entityClass
 	 *            The entity type of the result
 	 * @return cursor of the results
@@ -108,10 +111,11 @@ public interface ArangoOperations {
 	<T> ArangoCursor<T> query(String query, AqlQueryOptions options, Class<T> entityClass) throws DataAccessException;
 
 	/**
-	 * Create a cursor and return the first results. For queries without bind parameters.
+	 * Performs a database query using the given {@code query}, then returns a new {@code ArangoCursor} instance for the
+	 * result list.
 	 * 
 	 * @param query
-	 *            contains the query string to be executed
+	 *            An AQL query string
 	 * @param entityClass
 	 *            The entity type of the result
 	 * @return cursor of the results
@@ -120,12 +124,12 @@ public interface ArangoOperations {
 	<T> ArangoCursor<T> query(String query, Class<T> entityClass) throws DataAccessException;
 
 	/**
-	 * Removes multiple document
+	 * Deletes multiple documents from a collection.
 	 * 
 	 * @param values
 	 *            The keys of the documents or the documents themselves
 	 * @param entityClass
-	 *            The entity type of the documents
+	 *            The entity class which represents the collection
 	 * @param options
 	 *            Additional options, can be null
 	 * @return information about the documents
@@ -137,12 +141,12 @@ public interface ArangoOperations {
 		DocumentDeleteOptions options) throws DataAccessException;
 
 	/**
-	 * Removes multiple document
+	 * Deletes multiple documents from a collection.
 	 * 
 	 * @param values
 	 *            The keys of the documents or the documents themselves
 	 * @param entityClass
-	 *            The entity type of the documents
+	 *            The entity class which represents the collection
 	 * @return information about the documents
 	 * @throws DataAccessException
 	 */
@@ -150,12 +154,12 @@ public interface ArangoOperations {
 			throws DataAccessException;
 
 	/**
-	 * Removes a document
+	 * Deletes the document with the given {@code id} from a collection.
 	 * 
 	 * @param id
 	 *            The id or key of the document
 	 * @param entityClass
-	 *            The entity type of the document
+	 *            The entity class which represents the collection
 	 * @param options
 	 *            Additional options, can be null
 	 * @return information about the document
@@ -164,12 +168,12 @@ public interface ArangoOperations {
 	DocumentEntity delete(String id, Class<?> entityClass, DocumentDeleteOptions options) throws DataAccessException;
 
 	/**
-	 * Removes a document
+	 * Deletes the document with the given {@code id} from a collection.
 	 * 
 	 * @param id
 	 *            The id or key of the document
 	 * @param entityClass
-	 *            The entity type of the document
+	 *            The entity class which represents the collection
 	 * @return information about the document
 	 * @throws DataAccessException
 	 */
@@ -186,7 +190,7 @@ public interface ArangoOperations {
 	 * @param values
 	 *            A list of documents
 	 * @param entityClass
-	 *            The entity type of the documents
+	 *            The entity class which represents the collection
 	 * @param options
 	 *            Additional options, can be null
 	 * @return information about the documents
@@ -208,7 +212,7 @@ public interface ArangoOperations {
 	 * @param values
 	 *            A list of documents
 	 * @param entityClass
-	 *            The entity type of the documents
+	 *            The entity class which represents the collection
 	 * @return information about the documents
 	 * @throws DataAccessException
 	 */
@@ -254,7 +258,7 @@ public interface ArangoOperations {
 	 * @param values
 	 *            A List of documents
 	 * @param entityClass
-	 *            The entity type of the documents
+	 *            The entity class which represents the collection
 	 * @param options
 	 *            Additional options, can be null
 	 * @return information about the documents
@@ -274,7 +278,7 @@ public interface ArangoOperations {
 	 * @param values
 	 *            A List of documents
 	 * @param entityClass
-	 *            The entity type of the documents
+	 *            The entity class which represents the collection
 	 * @param options
 	 *            Additional options, can be null
 	 * @return information about the documents
@@ -284,8 +288,8 @@ public interface ArangoOperations {
 			throws DataAccessException;
 
 	/**
-	 * Replaces the document with key with the one in the body, provided there is such a document and no precondition is
-	 * violated
+	 * Replaces the document with {@code id} with the one in the body, provided there is such a document and no
+	 * precondition is violated
 	 * 
 	 * @param id
 	 *            The id or key of the document
@@ -299,8 +303,8 @@ public interface ArangoOperations {
 	<T> DocumentEntity replace(String id, T value, DocumentReplaceOptions options) throws DataAccessException;
 
 	/**
-	 * Replaces the document with key with the one in the body, provided there is such a document and no precondition is
-	 * violated
+	 * Replaces the document with {@code id} with the one in the body, provided there is such a document and no
+	 * precondition is violated
 	 * 
 	 * @param id
 	 *            The id or key of the document
@@ -311,12 +315,34 @@ public interface ArangoOperations {
 	 */
 	<T> DocumentEntity replace(String id, T value) throws DataAccessException;
 
+	/**
+	 * Retrieves the document with the given {@code id} from a collection.
+	 * 
+	 * @param id
+	 *            The id or key of the document
+	 * @param entityClass
+	 *            The entity class which represents the collection
+	 * @param options
+	 *            Additional options, can be null
+	 * @return the document identified by the id
+	 * @throws DataAccessException
+	 */
 	<T> Optional<T> find(String id, Class<T> entityClass, DocumentReadOptions options) throws DataAccessException;
 
+	/**
+	 * Retrieves the document with the given {@code id} from a collection.
+	 * 
+	 * @param id
+	 *            The id or key of the document
+	 * @param entityClass
+	 *            The entity class which represents the collection
+	 * @return the document identified by the id
+	 * @throws DataAccessException
+	 */
 	<T> Optional<T> find(String id, Class<T> entityClass) throws DataAccessException;
 
 	/**
-	 * Reads all documents from a collection
+	 * Retrieves all documents from a collection.
 	 * 
 	 * @param entityClass
 	 *            The entity class which represents the collection
@@ -326,16 +352,16 @@ public interface ArangoOperations {
 	<T> Iterable<T> findAll(Class<T> entityClass) throws DataAccessException;
 
 	/**
-	 * Reads multiple documents
+	 * Retrieves multiple documents with the given {@code ids} from a collection.
 	 * 
 	 * @param ids
 	 *            The ids or keys of the documents
 	 * @param entityClass
-	 *            The entity type of the documents
+	 *            The entity class which represents the collection
 	 * @return the documents
 	 * @throws DataAccessException
 	 */
-	<T> Iterable<T> find(final Iterable<String> ids, final Class<T> entityClass) throws DataAccessException;
+	<T> Iterable<T> find(Iterable<String> ids, Class<T> entityClass) throws DataAccessException;
 
 	/**
 	 * Creates new documents from the given documents, unless there is already a document with the _key given. If no
@@ -346,7 +372,7 @@ public interface ArangoOperations {
 	 * @param values
 	 *            A List of documents
 	 * @param entityClass
-	 *            The entity type of the documents
+	 *            The entity class which represents the collection
 	 * @param options
 	 *            Additional options, can be null
 	 * @return information about the documents
@@ -366,7 +392,7 @@ public interface ArangoOperations {
 	 * @param values
 	 *            A List of documents
 	 * @param entityClass
-	 *            The entity type of the documents
+	 *            The entity class which represents the collection
 	 * @return information about the documents
 	 * @throws DataAccessException
 	 */
@@ -378,7 +404,7 @@ public interface ArangoOperations {
 	 * _key is given, a new unique _key is generated automatically.
 	 * 
 	 * @param value
-	 *            A representation of a single document
+	 *            A representation of a single document (POJO, VPackSlice or String for Json)
 	 * @param options
 	 *            Additional options, can be null
 	 * @return information about the document
@@ -390,7 +416,7 @@ public interface ArangoOperations {
 	 * _key is given, a new unique _key is generated automatically.
 	 * 
 	 * @param value
-	 *            A representation of a single document
+	 *            A representation of a single document (POJO, VPackSlice or String for Json)
 	 * @return information about the document
 	 */
 	<T> DocumentEntity insert(T value) throws DataAccessException;
@@ -462,7 +488,7 @@ public interface ArangoOperations {
 	 * case it replaces the document.
 	 * 
 	 * @param value
-	 *            A representation of a single document
+	 *            A representation of a single document (POJO, VPackSlice or String for Json)
 	 * @throws DataAccessException
 	 * @since ArangoDB 3.4
 	 */
@@ -475,7 +501,7 @@ public interface ArangoOperations {
 	 * @param value
 	 *            A List of documents
 	 * @param entityClass
-	 *            The entity type of the documents
+	 *            The entity class which represents the collection
 	 * @throws DataAccessException
 	 * @since ArangoDB 3.4
 	 */
@@ -487,7 +513,7 @@ public interface ArangoOperations {
 	 * @param id
 	 *            The id or key of the document
 	 * @param entityClass
-	 *            The entity type of the document
+	 *            The entity type representing the collection
 	 * @return true if the document exists, false if not
 	 * @throws DataAccessException
 	 */
